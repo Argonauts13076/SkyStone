@@ -115,7 +115,8 @@ public class ConceptVuMarkIdentificationWebcam extends LinearOpMode {
          * Once you've obtained a license key, copy the string from the Vuforia web site
          * and paste it in to your code on the next line, between the double quotes.
          */
-        parameters.vuforiaLicenseKey = " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
+        parameters.vuforiaLicenseKey =
+                "AdlTbyT/////AAABmRzwXqB2QkgjoGVrNLf2cn1fVKNUyrJY52lWZSj6LLjLBbboeY6C+yHcl6Z2IktdtHNUkPoYp4NCpGu5Gi4WJZ+LYITD/iHVbH+AcfUijOwAtAlyczB7zogzmQ4cTwL8f71iwtt6tn1zb9hhFL32l3nEmeqw4wE0j/c5Cbw8oObewGJkPNBtcVNdsu8fGw8MxCYgXL+JgvTvY9UXtcl4vt9dlW/wwGo5oScv5iuH3gFVQfQSg88YdT7VEuPGmY1eXMEwlpLllzvpCNueMnR7ZzbZHJS6/JGPIrCwiAzTOQUTtha8/9doDiR7wPfKD6h0+WQSh8nbPFlxETcIm9h+DM6Fq7/0tIaN2cRkSqPGRFyy";
 
 
         /**
