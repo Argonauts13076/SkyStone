@@ -232,7 +232,7 @@ public class ConceptVuforiaSkyStoneNavigationWebcam extends LinearOpMode {
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, bridgeRotY, bridgeRotZ)));
 
         blueRearBridge.setLocation(OpenGLMatrix
-                .translation(-bridgeX, bridgeY, bridgeZ)
+                .translation(bridgeX, bridgeY, bridgeZ)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 0, -bridgeRotY, bridgeRotZ)));
 
         redFrontBridge.setLocation(OpenGLMatrix
