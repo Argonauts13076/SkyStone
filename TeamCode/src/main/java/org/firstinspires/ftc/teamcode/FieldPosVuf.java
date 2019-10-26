@@ -14,28 +14,21 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 
 public class FieldPosVuf {
 
-    ArrayList<VuforiaTrackable> trackables;
-    ArrayList<Position> relativePositions;
+    List<VuforiaTrackable> trackables;
     OpenGLMatrix lastLocation = null;
-    int lastImageId = -1;
+
+    private final OpenGLMatrix cameraRelativeToRobot;
 
     private static final float mmPerInch = 25.4f;
 
     boolean targetVisible = false;
 
-    public FieldPosVuf(ArrayList<VuforiaTrackable> trackables, ArrayList<Position> relativePositions){
+    public FieldPosVuf(List<VuforiaTrackable> trackables, OpenGLMatrix cameraRelativeToRobot){
         this.trackables = trackables;
-        this.relativePositions = relativePositions;
+        this.cameraRelativeToRobot = cameraRelativeToRobot;
     }
 
-    public Position getPosAbs(){
-        PositionAndInt data = getPosVuf();
-        Position imageFieldPosition = relativePositions.get(data.integer);
-        Position finalPosition = new Position(imageFieldPosition.X - data.position.X, imageFieldPosition.Y - data.position.Y, (imageFieldPosition.rotation - data.position.rotation)%360, data.position.confidence);
-        return finalPosition;
-    }
-
-    private PositionAndInt getPosVuf(){
+    public OpenGLMatrix getPosVuf(){
 
 
         targetVisible = false;
@@ -47,21 +40,17 @@ public class FieldPosVuf {
                 // the last time that call was made, or if the trackable is not currently visible.
                 OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
                 if (robotLocationTransform != null) {
-                    lastLocation = robotLocationTransform;
-                    lastImageId = trackables.indexOf(trackable);
+                    VectorF translation = robotLocationTransform.getTranslation();
+                    lastLocation = robotLocationTransform.translated(translation.get(0) / mmPerInch - translation.get(0), translation.get(1) / mmPerInch - translation.get(1), translation.get(2) / mmPerInch - translation.get(2)).multiplied(cameraRelativeToRobot);
                 }
                 break;
             }
         }
 
         if (targetVisible) {
-            VectorF translation = lastLocation.getTranslation();
-            Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-            return new PositionAndInt(new Position(translation.get(0)/mmPerInch,translation.get(1)/mmPerInch, rotation.thirdAngle, 1), lastImageId);
+            return lastLocation;
         }else{
-            VectorF translation = lastLocation.getTranslation();
-            Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-            return new PositionAndInt(new Position(translation.get(0)/mmPerInch,translation.get(1)/mmPerInch,rotation.thirdAngle,0), lastImageId);
+            return lastLocation;
         }
     }
 
