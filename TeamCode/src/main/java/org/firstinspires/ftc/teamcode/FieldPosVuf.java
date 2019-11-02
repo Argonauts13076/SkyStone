@@ -40,8 +40,7 @@ public class FieldPosVuf {
                 // the last time that call was made, or if the trackable is not currently visible.
                 OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
                 if (robotLocationTransform != null) {
-                    VectorF translation = robotLocationTransform.getTranslation();
-                    lastLocation = robotLocationTransform.translated(translation.get(0) / mmPerInch - translation.get(0), translation.get(1) / mmPerInch - translation.get(1), translation.get(2) / mmPerInch - translation.get(2)).multiplied(cameraRelativeToRobot);
+                    lastLocation = robotLocationTransform;
                 }
                 break;
             }
