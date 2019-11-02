@@ -82,6 +82,8 @@ public class BasicDriveTrainHardware {
     float phoneZRotate    = 0;
 
     public VuforiaTrackables targetsSkyStone;
+    public VuforiaTrackables navTargets;
+    public VuforiaTrackables stoneTarget;
 
     public FieldPosVuf fieldTracker;
     public FieldPosVuf stoneTracker;
@@ -138,65 +140,54 @@ public class BasicDriveTrainHardware {
             targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
 
             // For convenience, gather together all the trackable objects in one easily-iterable collection */
-            List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
+            navTargets = (VuforiaTrackables)targetsSkyStone.subList(1,12);
+            stoneTarget = (VuforiaTrackables)targetsSkyStone.subList(0,0);
 
             // Only stoneTarget will not be included
-            VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
+            VuforiaTrackable skyStone = stoneTarget.get(0);
             stoneTarget.setName("Stone Target");
 
 
-            VuforiaTrackable blueRearBridge = targetsSkyStone.get(1);
+            VuforiaTrackable blueRearBridge = navTargets.get(0);
             blueRearBridge.setName("Blue Rear Bridge");
-            allTrackables.add(blueRearBridge);
 
-            VuforiaTrackable redRearBridge = targetsSkyStone.get(2);
+            VuforiaTrackable redRearBridge = navTargets.get(1);
             redRearBridge.setName("Red Rear Bridge");
-            allTrackables.add(redRearBridge);
 
-            VuforiaTrackable redFrontBridge = targetsSkyStone.get(3);
+            VuforiaTrackable redFrontBridge = navTargets.get(2);
             redFrontBridge.setName("Red Front Bridge");
-            allTrackables.add(redFrontBridge);
 
-            VuforiaTrackable blueFrontBridge = targetsSkyStone.get(4);
+            VuforiaTrackable blueFrontBridge = navTargets.get(3);
             blueFrontBridge.setName("Blue Front Bridge");
-            allTrackables.add(blueFrontBridge);
 
-            VuforiaTrackable red1 = targetsSkyStone.get(5);
+            VuforiaTrackable red1 = navTargets.get(4);
             red1.setName("Red Perimeter 1");
-            allTrackables.add(red1);
 
-            VuforiaTrackable red2 = targetsSkyStone.get(6);
+            VuforiaTrackable red2 = navTargets.get(5);
             red2.setName("Red Perimeter 2");
-            allTrackables.add(red2);
 
-            VuforiaTrackable front1 = targetsSkyStone.get(7);
+            VuforiaTrackable front1 = navTargets.get(6);
             front1.setName("Front Perimeter 1");
-            allTrackables.add(front1);
 
-            VuforiaTrackable front2 = targetsSkyStone.get(8);
+            VuforiaTrackable front2 = navTargets.get(7);
             front2.setName("Front Perimeter 2");
-            allTrackables.add(front2);
 
-            VuforiaTrackable blue1 = targetsSkyStone.get(9);
+            VuforiaTrackable blue1 = navTargets.get(8);
             blue1.setName("Blue Perimeter 1");
-            allTrackables.add(blue1);
 
-            VuforiaTrackable blue2 = targetsSkyStone.get(10);
+            VuforiaTrackable blue2 = navTargets.get(9);
             blue2.setName("Blue Perimeter 2");
-            allTrackables.add(blue2);
 
-            VuforiaTrackable rear1 = targetsSkyStone.get(11);
+            VuforiaTrackable rear1 = navTargets.get(10);
             rear1.setName("Rear Perimeter 1");
-            allTrackables.add(rear1);
 
-            VuforiaTrackable rear2 = targetsSkyStone.get(12);
+            VuforiaTrackable rear2 = navTargets.get(11);
             rear2.setName("Rear Perimeter 2");
-            allTrackables.add(rear2);
 
             // Set the position of the Stone Target.  Since it's not fixed in position, assume it's at the field origin.
             // Rotated it to to face forward, and raised it to sit on the ground correctly.
             // This can be used for generic target-centric approach algorithms
-            stoneTarget.setLocation(OpenGLMatrix
+            skyStone.setLocation(OpenGLMatrix
                     .translation(0, 0, stoneZ)
                     .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90)));
 
@@ -256,16 +247,12 @@ public class BasicDriveTrainHardware {
                     .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, phoneYRotate, phoneZRotate, phoneXRotate));
 
             /**  Let all the trackable listeners know where the phone is.  */
-            ((VuforiaTrackableDefaultListener) stoneTarget.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
-            for (VuforiaTrackable trackable : allTrackables) {
+            for (VuforiaTrackable trackable : targetsSkyStone) {
                 ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
             }
 
-            ArrayList<VuforiaTrackable> stone = new ArrayList<VuforiaTrackable>();
-            stone.add(stoneTarget);
-
-            fieldTracker = new FieldPosVuf(allTrackables, robotFromCamera);
-            stoneTracker = new FieldPosVuf(stone, robotFromCamera);
+            fieldTracker = new FieldPosVuf(navTargets, robotFromCamera);
+            stoneTracker = new FieldPosVuf(stoneTarget, robotFromCamera);
 
         }catch(Exception e){
 
