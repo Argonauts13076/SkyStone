@@ -17,7 +17,7 @@ public class VuforiaTest extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        hardware.init(hardwareMap,telemetry);
+        hardware.init(hardwareMap);
 
         telemetry.addData("hardware", hardware);
         telemetry.addData("fieldTracker",hardware.fieldTracker);
