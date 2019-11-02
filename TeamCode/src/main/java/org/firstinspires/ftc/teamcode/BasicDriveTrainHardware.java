@@ -82,7 +82,6 @@ public class BasicDriveTrainHardware {
     float phoneYRotate    = 0;
     float phoneZRotate    = 0;
 
-    public VuforiaTrackables targetsSkyStone;
     public VuforiaTrackables navTargets;
     public VuforiaTrackables stoneTarget;
 
@@ -138,16 +137,16 @@ public class BasicDriveTrainHardware {
 
             // Load the data sets for the trackable objects. These particular data
             // sets are stored in the 'assets' part of our application.
-            targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
-
-            // For convenience, gather together all the trackable objects in one easily-iterable collection */
-            navTargets = (VuforiaTrackables)targetsSkyStone.subList(1,12);
-            stoneTarget = (VuforiaTrackables)targetsSkyStone.subList(0,0);
+            navTargets = this.vuforia.loadTrackablesFromAsset("Skystone");
+            stoneTarget = this.vuforia.loadTrackablesFromAsset("Skystone");
 
             // Only stoneTarget will not be included
             VuforiaTrackable skyStone = stoneTarget.get(0);
-            stoneTarget.setName("Stone Target");
-
+            skyStone.setName("Stone Target");
+            navTargets.remove(0);
+            for(int i = 1; i < stoneTarget.size(); i++){
+                stoneTarget.remove(1);
+            }
 
             VuforiaTrackable blueRearBridge = navTargets.get(0);
             blueRearBridge.setName("Blue Rear Bridge");
@@ -248,9 +247,10 @@ public class BasicDriveTrainHardware {
                     .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, phoneYRotate, phoneZRotate, phoneXRotate));
 
             /**  Let all the trackable listeners know where the phone is.  */
-            for (VuforiaTrackable trackable : targetsSkyStone) {
+            for (VuforiaTrackable trackable : navTargets) {
                 ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
             }
+            ((VuforiaTrackableDefaultListener) skyStone.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
 
             fieldTracker = new FieldPosVuf(navTargets, robotFromCamera);
             stoneTracker = new FieldPosVuf(stoneTarget, robotFromCamera);
