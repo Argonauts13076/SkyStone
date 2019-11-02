@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -102,7 +103,7 @@ public class BasicDriveTrainHardware {
 
     public BasicDriveTrainHardware(){}
 
-    public void init(HardwareMap ahwMap){
+    public void init(HardwareMap ahwMap, Telemetry telemetry){
         hwMap = ahwMap;
 
         //---------//
@@ -255,7 +256,7 @@ public class BasicDriveTrainHardware {
             stoneTracker = new FieldPosVuf(stoneTarget, robotFromCamera);
 
         }catch(Exception e){
-
+            telemetry.addData("There was a problem with vuforia!",e.toString());
         }
 
         //-------------//
@@ -283,10 +284,8 @@ public class BasicDriveTrainHardware {
             RearLeft.setPower(0);
             RearRight.setPower(0);
         }catch(Exception e){
-
+            telemetry.addData("There was a problem with setting up the motors!",e.toString());
         }
-
-
     }
 
 

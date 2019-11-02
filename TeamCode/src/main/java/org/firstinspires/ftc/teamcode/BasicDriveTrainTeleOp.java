@@ -14,7 +14,9 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        hardware.init(hardwareMap);
+        hardware.init(hardwareMap, telemetry);
+
+        telemetry.update();
 
         waitForStart();
 
