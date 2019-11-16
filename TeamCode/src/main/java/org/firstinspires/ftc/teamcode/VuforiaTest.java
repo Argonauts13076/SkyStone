@@ -24,8 +24,9 @@ public class VuforiaTest extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
+        telemetry.addData("wait for start", 1);
+        telemetry.update();
 
-        hardware.navTargets.activate();
         while (opModeIsActive()) {
             OpenGLMatrix fieldPos = hardware.fieldTracker.getPosVuf();
             if(fieldPos != null) {
@@ -45,6 +46,6 @@ public class VuforiaTest extends LinearOpMode {
             telemetry.update();
             sleep(50);
         }
-        hardware.navTargets.deactivate();
+
     }
 }

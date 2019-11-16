@@ -107,7 +107,6 @@ public class BasicDriveTrainHardware {
         // Vuforia //
         //---------//
 
-        try {
             /*
              * Retrieve the camera we are to use.
              */
@@ -264,18 +263,15 @@ public class BasicDriveTrainHardware {
             ArrayList<VuforiaTrackable> stone = new ArrayList<VuforiaTrackable>();
             stone.add(stoneTarget);
 
+            targetsSkyStone.activate();
             fieldTracker = new FieldPosVuf(allTrackables, robotFromCamera);
             stoneTracker = new FieldPosVuf(stone, robotFromCamera);
 
-        }catch(Exception e){
-
-        }
 
         //-------------//
         // Other Stuff //
         //-------------//
 
-        try {
             FrontLeft = hwMap.get(DcMotor.class, "front_left");
             FrontRight = hwMap.get(DcMotor.class, "front_right");
             RearLeft = hwMap.get(DcMotor.class, "rear_left");
@@ -295,8 +291,7 @@ public class BasicDriveTrainHardware {
             FrontRight.setPower(0);
             RearLeft.setPower(0);
             RearRight.setPower(0);
-        }catch(Exception e){
 
-        }
+
     }
 }
