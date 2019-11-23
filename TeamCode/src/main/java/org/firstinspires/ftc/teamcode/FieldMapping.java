@@ -22,6 +22,10 @@ public class FieldMapping {
         obstacles.add(new FieldObstacle(x,y,length,width,0));
     }
 
+    public void addObstacle(FieldObstacle obstacle){
+        obstacles.add(obstacle);
+    }
+
 
 }
 
