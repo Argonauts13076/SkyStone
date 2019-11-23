@@ -86,14 +86,21 @@ public class BasicDriveTrainHardware {
     public FieldPosVuf fieldTracker;
     public FieldPosVuf stoneTracker;
 
-    //-------------//
-    // Other Stuff //
-    //-------------//
+    //--------//
+    // Wheels //
+    //--------//
 
     public DcMotor FrontLeft = null;
     public DcMotor FrontRight = null;
     public DcMotor RearLeft = null;
     public DcMotor RearRight = null;
+
+    //-------------//
+    // Other Stuff //
+    //-------------//
+
+    public DcMotor ScissorLift = null;
+    public Servo Hook;
 
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
@@ -268,9 +275,9 @@ public class BasicDriveTrainHardware {
             stoneTracker = new FieldPosVuf(stone, robotFromCamera);
 
 
-        //-------------//
-        // Other Stuff //
-        //-------------//
+        //--------//
+        // Wheels //
+        //--------//
 
             FrontLeft = hwMap.get(DcMotor.class, "front_left");
             FrontRight = hwMap.get(DcMotor.class, "front_right");
@@ -291,6 +298,11 @@ public class BasicDriveTrainHardware {
             FrontRight.setPower(0);
             RearLeft.setPower(0);
             RearRight.setPower(0);
+
+        //-------------//
+        // Other Stuff //
+        //-------------//
+
 
 
     }
