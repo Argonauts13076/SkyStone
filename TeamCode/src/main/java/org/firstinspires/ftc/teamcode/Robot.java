@@ -13,6 +13,9 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 
 public class Robot {
+    public static float maxDist = 48;
+    public static float minPower = 0.1f;
+
     public double posErr = 1.0;
     public BasicDriveTrainHardware hardware;
 
@@ -109,10 +112,10 @@ public class Robot {
                 Math.sqrt(Math.pow(curr.X - target.X, 2) + Math.pow(curr.Y - target.Y, 2));
         double power;
 
-        if (distance > 48.0) {
+        if (distance > maxDist) {
             power = 1.0;
         } else {
-            power = 0.1 + (distance / 48.0 - 0.1);
+            power = minPower + (distance / maxDist) * (1 - minPower);
         }
 
         ret[0] = targetAngle;
