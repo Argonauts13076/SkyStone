@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.*;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.matrices.*;
+import org.firstinspires.ftc.robotcore.external.navigation.*;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -34,11 +35,15 @@ public class VuforiaTest extends LinearOpMode {
 
             if (fieldPos != null) {
                 Orientation rotation = Orientation.getOrientation(fieldPos, EXTRINSIC, XYZ, DEGREES);
+
                 VectorF translation = fieldPos.getTranslation();
+
+
+
                 Position curPos;
                 telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
                         translation.get(0)/25.4, translation.get(1)/25.4, translation.get(2)/25.4);
-                telemetry.addData("Heading", "%.0f", rotation.thirdAngle);
+                telemetry.addData("Heading", "{X, Y, Rotation} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
 
                 curPos = new Position(translation.get(0)/25.4, translation.get(1)/25.4,
                         Math.toRadians(rotation.thirdAngle), 100);
