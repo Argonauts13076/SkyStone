@@ -34,10 +34,10 @@ public class Robot {
         }
 
 
-        hardware.FrontRight.setPower(-((cos - sin) * power));
-        hardware.RearRight.setPower(-((cos + sin) * power));
-        hardware.FrontLeft.setPower((cos + sin) * power);
-        hardware.RearLeft.setPower((cos - sin) * power);
+        hardware.FrontRight.setPower(-((cos + sin) * power));
+        hardware.RearRight.setPower(-((cos - sin) * power));
+        hardware.FrontLeft.setPower((cos - sin) * power);
+        hardware.RearLeft.setPower((cos + sin) * power);
     }
 
     public void turn(double power) {
@@ -107,7 +107,7 @@ public class Robot {
         double[] ret = new double[2];
 
         double beta = Math.atan2(target.Y - curr.Y, target.X - curr.X);
-        double targetAngle = -curr.rotation + beta;
+        double targetAngle = (Math.PI/2) - curr.rotation + beta;
         double distance =
                 Math.sqrt(Math.pow(curr.X - target.X, 2) + Math.pow(curr.Y - target.Y, 2));
         double power;
