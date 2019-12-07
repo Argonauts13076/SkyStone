@@ -96,8 +96,17 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
                 }
             }
 
-            if(gamepad1A){
-
+            if(gamepad2A){
+                if(gripperLatch){
+                    gripperLatch = false;
+                    if(hardware.getGripperState()){
+                        hardware.CloseGripper();
+                    }else{
+                        hardware.OpenGripper();
+                    }
+                }
+            }else{
+                gripperLatch = true;
             }
 
             sleep(50);

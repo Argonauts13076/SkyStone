@@ -338,6 +338,10 @@ public class BasicDriveTrainHardware {
         ChangeGripperPosition(GripperClosePosition);
     }
 
+    public boolean getGripperState(){
+        return gripperState;
+    }
+
     private void ChangeGripperPosition(double position){
         // ToDo Make Servo Code
     }
