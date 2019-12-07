@@ -99,6 +99,11 @@ public class BasicDriveTrainHardware {
     // Other Stuff //
     //-------------//
 
+    // Default, Left:0.705  Right:0.165
+    // Open,
+    // Close,
+    //
+
     public DcMotor ScissorLift = null;
     public Servo GripperLeft;
     public Servo GripperRight;
