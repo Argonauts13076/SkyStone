@@ -324,6 +324,9 @@ public class BasicDriveTrainHardware {
             GripperLeft = hwMap.get(Servo.class, "gripper_left");
             GripperRight = hwMap.get(Servo.class, "gripper_right");
 
+            GripperLeft.setDirection(Servo.Direction.FORWARD);
+            GripperRight.setDirection(Servo.Direction.FORWARD);
+
             ChangeGripperPosition(GripperDefaultPosition);
 
     }
@@ -344,6 +347,9 @@ public class BasicDriveTrainHardware {
 
     private void ChangeGripperPosition(double position){
         // ToDo Make Servo Code
+        // Hopefully it works
+        GripperLeft.setPosition(position);
+        GripperRight.setPosition(1-position);
     }
 
     public void SetScissorLiftPosition(int newPos){
