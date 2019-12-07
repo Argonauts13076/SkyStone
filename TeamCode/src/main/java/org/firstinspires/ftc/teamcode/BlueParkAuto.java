@@ -42,13 +42,13 @@ public class BlueParkAuto extends LinearOpMode {
                         translation.get(0) / 25.4, translation.get(1) / 25.4, translation.get(2) / 25.4);
                 telemetry.addData("Headinng", "%.2f, %.2f, %.2f", Math.toDegrees(rotation.thirdAngle - (Math.PI / 2.0)),
                         Math.toDegrees(rotation.firstAngle), Math.toDegrees(rotation.secondAngle));
-
+                telemetry.addData("True Heading", Math.toDegrees(rotation.thirdAngle - (Math.PI/2.0) - Math.sin(rotation.firstAngle)*rotation.secondAngle));
                 curPos = new Position(translation.get(0) / 25.4, translation.get(1) / 25.4,
                         rotation.thirdAngle - (Math.PI / 2.0), 100);
                 tempResult = Robot.computeAngleAndPower(curPos, tempTarget);
                 telemetry.addData("Beta", "%.1f", Math.toDegrees(Math.atan2(tempTarget.Y - curPos.Y, tempTarget.X - curPos.X)));
                 telemetry.addData("Angle and power", "%.1f, %.1f", Math.toDegrees(tempResult[0]), tempResult[1]);
-                robot.moveAngle(tempResult[0], tempResult[1]);
+                //robot.moveAngle(tempResult[0], tempResult[1]);
                 // PLEASE REMOVE WHEN DONE
                 double sin = Math.sin(tempResult[0]);
                 double cos = Math.cos(tempResult[0]);
