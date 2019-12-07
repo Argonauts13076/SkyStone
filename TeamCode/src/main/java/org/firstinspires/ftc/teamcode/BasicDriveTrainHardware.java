@@ -111,6 +111,8 @@ public class BasicDriveTrainHardware {
 
     private int currentPosition = 0;
 
+    public boolean manualOverride = false;
+
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
 
@@ -345,7 +347,9 @@ public class BasicDriveTrainHardware {
             currentPosition = 0;
         }
 
-        ScissorLift.setTargetPosition(ScissorLiftPositionList[currentPosition]);
+        if(!manualOverride){
+            ScissorLift.setTargetPosition(ScissorLiftPositionList[currentPosition]);
+        }
     }
 
     public int getScissorLiftPosition(){
@@ -358,5 +362,10 @@ public class BasicDriveTrainHardware {
 
     public void decrementPosition(){
         SetScissorLiftPosition(currentPosition--);
+    }
+
+    public void scissorLiftManualOverride(){
+        manualOverride = true;
+        ScissorLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }
