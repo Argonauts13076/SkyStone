@@ -48,8 +48,8 @@ public class FieldPosVuf {
 
         if (targetVisible) {
             return lastLocation;
-        }else{
-            return lastLocation;
+        } else {
+            return null;
         }
     }
 
