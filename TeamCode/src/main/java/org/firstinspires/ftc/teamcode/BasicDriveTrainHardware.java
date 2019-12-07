@@ -100,7 +100,14 @@ public class BasicDriveTrainHardware {
     //-------------//
 
     public DcMotor ScissorLift = null;
-    public Servo Hook;
+    public Servo GripperLeft;
+    public Servo GripperRight;
+
+    // ToDo Set Values
+    public static int[] ScissorLiftPositionList = new int[]{0,10,100};
+    public static double GripperDefaultPosition = 0;
+    public static double GripperClosePosition = 0;
+    public static double GripperOpenPosition = 0;
 
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
@@ -303,7 +310,28 @@ public class BasicDriveTrainHardware {
         // Other Stuff //
         //-------------//
 
+            ScissorLift = hwMap.get(DcMotor.class, "scissor_lift");
+            ScissorLift.setDirection(DcMotor.Direction.FORWARD);
+            ScissorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            ScissorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            ScissorLift.setPower(0);
 
+            GripperLeft = hwMap.get(Servo.class, "gripper_left");
+            GripperRight = hwMap.get(Servo.class, "gripper_right");
 
+            ChangeGripperPosition(GripperDefaultPosition);
+
+    }
+
+    public void OpenGripper(){
+        ChangeGripperPosition(GripperOpenPosition);
+    }
+
+    public void CloseGripper(){
+        ChangeGripperPosition(GripperClosePosition);
+    }
+
+    private void ChangeGripperPosition(double position){
+        // ToDo Make Servo Code
     }
 }
