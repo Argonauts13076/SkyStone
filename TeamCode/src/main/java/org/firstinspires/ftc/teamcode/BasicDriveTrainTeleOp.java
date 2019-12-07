@@ -21,6 +21,7 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
         String s = hardware.init(hardwareMap);
 
         telemetry.addData("Errors", s);
+        telemetry.update();
 
         waitForStart();
 
