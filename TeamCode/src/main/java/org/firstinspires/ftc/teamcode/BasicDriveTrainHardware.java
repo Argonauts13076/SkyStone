@@ -113,7 +113,7 @@ public class BasicDriveTrainHardware {
     private int currentPosition = 0;
     private boolean gripperState = false;
 
-    public boolean manualOverride = false;
+    private boolean manualOverride = false;
 
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
@@ -390,5 +390,9 @@ public class BasicDriveTrainHardware {
         ScissorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         ScissorLift.setPower(ScissorLiftPower);
         currentPosition = 0;
+    }
+
+    public boolean getManualOverride(){
+        return gripperState;
     }
 }
