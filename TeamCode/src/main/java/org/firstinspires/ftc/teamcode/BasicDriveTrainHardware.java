@@ -105,6 +105,7 @@ public class BasicDriveTrainHardware {
 
     // ToDo Set Values
     public static int[] ScissorLiftPositionList = new int[]{0,10,100};
+    public static double ScissorLiftPower = 0;
     public static double GripperDefaultPosition = 0;
     public static double GripperClosePosition = 0;
     public static double GripperOpenPosition = 0;
@@ -317,7 +318,7 @@ public class BasicDriveTrainHardware {
             ScissorLift = hwMap.get(DcMotor.class, "scissor_lift");
             ScissorLift.setDirection(DcMotor.Direction.FORWARD);
             ScissorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            ScissorLift.setPower(0);
+            ScissorLift.setPower(ScissorLiftPower);
 
             GripperLeft = hwMap.get(Servo.class, "gripper_left");
             GripperRight = hwMap.get(Servo.class, "gripper_right");
@@ -367,5 +368,14 @@ public class BasicDriveTrainHardware {
     public void scissorLiftManualOverride(){
         manualOverride = true;
         ScissorLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        ScissorLift.setPower(0);
+    }
+
+    public void revokeScissorLiftManualOverride(){
+        manualOverride = false;
+        ScissorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ScissorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ScissorLift.setPower(ScissorLiftPower);
+        currentPosition = 0;
     }
 }
