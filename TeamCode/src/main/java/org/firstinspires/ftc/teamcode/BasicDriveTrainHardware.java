@@ -115,18 +115,30 @@ public class BasicDriveTrainHardware {
 
     private boolean manualOverride = false;
 
+    //----------------//
+    // Error Handling //
+    //----------------//
+
+    public boolean canUseVuforia = false;
+    public boolean canUseWheels = false;
+    public boolean canUseScissorLift = false;
+    public boolean canUseGripper = false;
+
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
 
     public BasicDriveTrainHardware(){}
 
-    public void init(HardwareMap ahwMap){
+    public String init(HardwareMap ahwMap){
         hwMap = ahwMap;
 
         //---------//
         // Vuforia //
         //---------//
 
+        String result = "";
+
+        try {
             /*
              * Retrieve the camera we are to use.
              */
@@ -287,11 +299,16 @@ public class BasicDriveTrainHardware {
             fieldTracker = new FieldPosVuf(allTrackables, robotFromCamera);
             stoneTracker = new FieldPosVuf(stone, robotFromCamera);
 
+            canUseVuforia = true;
+        }catch(Exception e){
+            result += e.toString();
+        }
 
         //--------//
         // Wheels //
         //--------//
 
+        try {
             FrontLeft = hwMap.get(DcMotor.class, "front_left");
             FrontRight = hwMap.get(DcMotor.class, "front_right");
             RearLeft = hwMap.get(DcMotor.class, "rear_left");
@@ -312,15 +329,29 @@ public class BasicDriveTrainHardware {
             RearLeft.setPower(0);
             RearRight.setPower(0);
 
+            canUseWheels = true;
+
+        }catch (Exception e){
+            result += e.toString();
+        }
+
         //-------------//
         // Other Stuff //
         //-------------//
 
+        try {
             ScissorLift = hwMap.get(DcMotor.class, "scissor_lift");
             ScissorLift.setDirection(DcMotor.Direction.FORWARD);
             ScissorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             ScissorLift.setPower(ScissorLiftPower);
 
+            canUseScissorLift = true;
+
+        }catch (Exception e){
+            result += e.toString();
+        }
+
+        try {
             GripperLeft = hwMap.get(Servo.class, "gripper_left");
             GripperRight = hwMap.get(Servo.class, "gripper_right");
 
@@ -329,6 +360,13 @@ public class BasicDriveTrainHardware {
 
             ChangeGripperPosition(GripperDefaultPosition);
 
+            canUseGripper = true;
+
+        }catch (Exception e){
+            result += e.toString();
+        }
+
+        return result;
     }
 
     public void OpenGripper(){
