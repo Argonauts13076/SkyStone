@@ -111,6 +111,7 @@ public class BasicDriveTrainHardware {
     public static double GripperOpenPosition = 0;
 
     private int currentPosition = 0;
+    private boolean gripperState = false;
 
     public boolean manualOverride = false;
 
@@ -328,10 +329,12 @@ public class BasicDriveTrainHardware {
     }
 
     public void OpenGripper(){
+        gripperState = false;
         ChangeGripperPosition(GripperOpenPosition);
     }
 
     public void CloseGripper(){
+        gripperState = true;
         ChangeGripperPosition(GripperClosePosition);
     }
 

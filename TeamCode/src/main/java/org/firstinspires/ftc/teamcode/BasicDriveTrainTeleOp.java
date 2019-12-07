@@ -9,6 +9,7 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
 
     float speedDivisor = 1;
     boolean scissorLiftLatch = true;
+    boolean gripperLatch = true;
 
     BasicDriveTrainHardware hardware = new BasicDriveTrainHardware();
 
@@ -32,6 +33,7 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
             boolean gamepad2DPadDown = gamepad2.dpad_down;
             float gamepad2LeftTrigger = gamepad2.left_trigger;
             float gamepad2RightTrigger = gamepad2.left_trigger;
+            boolean gamepad2A = gamepad2.a;
 
             if(gamepad1X){
                 speedDivisor = 4;
@@ -92,6 +94,10 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
                 }else{
                     scissorLiftLatch = true;
                 }
+            }
+
+            if(gamepad1A){
+
             }
 
             sleep(50);
