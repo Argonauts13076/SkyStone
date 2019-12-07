@@ -14,9 +14,9 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 
 public class Robot {
     public static float maxDist = 48;
-    public static float minPower = 0.1f;
+    public static float minPower = 0;
 
-    public double posErr = 1.0;
+    public static double posThresh = 1.5;
     public BasicDriveTrainHardware hardware;
 
     public Robot(BasicDriveTrainHardware hw) {
@@ -35,8 +35,8 @@ public class Robot {
 
 
         hardware.FrontRight.setPower(-((cos + sin) * power));
-        hardware.RearRight.setPower(-((cos - sin) * power));
-        hardware.FrontLeft.setPower((cos - sin) * power);
+        hardware.RearRight.setPower(-((cos - sin) * -power));
+        hardware.FrontLeft.setPower((cos - sin) * -power);
         hardware.RearLeft.setPower((cos + sin) * power);
     }
 
@@ -48,8 +48,8 @@ public class Robot {
         }
         hardware.FrontLeft.setPower(power);
         hardware.RearLeft.setPower(power);
-        hardware.FrontRight.setPower(-power);
-        hardware.RearRight.setPower(-power);
+        hardware.FrontRight.setPower(power);
+        hardware.RearRight.setPower(power);
     }
 
     public void motorOn(int motorNumber, double power) {
@@ -91,12 +91,10 @@ public class Robot {
 
     public void goToPosition(Position target) {
         Position curr = getPosition();
-        while (Math.abs(curr.X - target.X) > posErr || Math.abs(curr.Y - target.Y) > posErr) {
-/*            while (!vuforiaLockOn()) {
-                turn(0.25);
-            } */
-            curr = getPosition();
 
+        if (curr == null) {
+            turn(0.25);
+        } else {
             double[] angleAndPower = computeAngleAndPower(curr, target);
             moveAngle(angleAndPower[0], angleAndPower[1]);
         }
@@ -114,8 +112,11 @@ public class Robot {
 
         if (distance > maxDist) {
             power = 1.0;
+        } else if (distance <= posThresh ) {
+            power = 0;
         } else {
-            power = minPower + (distance / maxDist) * (1 - minPower);
+            //power = minPower + (distance / maxDist) * (1 - minPower);
+            power = minPower + (distance / maxDist);
         }
 
         ret[0] = targetAngle;

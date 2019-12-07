@@ -46,11 +46,9 @@ public class VuforiaTest extends LinearOpMode {
                 Position curPos;
                 telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
                         translation.get(0)/25.4, translation.get(1)/25.4, translation.get(2)/25.4);
-                telemetry.addData("Headinng", "%.2f, %.2f, %.2f", Math.toDegrees(rotation.thirdAngle - (Math.PI/2.0)),
-                                  Math.toDegrees(rotation.firstAngle), Math.toDegrees(rotation.secondAngle));
 
                 /* if the Y rotation flips, add half a rotation to the "heading" */
-                if (Math.abs(rotation.secondAngle - prevAngle[1]) > 135) {
+                if (Math.abs(rotation.firstAngle - prevAngle[0]) > 90) {
                     rotation.thirdAngle += Math.PI;
                 }
 
@@ -59,7 +57,14 @@ public class VuforiaTest extends LinearOpMode {
                 tempResult = Robot.computeAngleAndPower(curPos, tempTarget);
                 telemetry.addData("Beta", "%.1f", Math.toDegrees(Math.atan2(tempTarget.Y - curPos.Y, tempTarget.X - curPos.X)));
                 telemetry.addData("Angle and power", "%.1f, %.1f", Math.toDegrees(tempResult[0]), tempResult[1]);
-                robot.moveAngle( tempResult[0], tempResult[1]);
+
+                telemetry.addData("Headinng", "%.2f, %.2f, %.2f", Math.toDegrees(rotation.thirdAngle),
+                        Math.toDegrees(rotation.firstAngle), Math.toDegrees(rotation.secondAngle));
+
+                if (curPos != tempTarget) {
+                    robot.moveAngle(tempResult[0], tempResult[1]);
+                    //robot.goToPosition(tempTarget);
+                }
                 // PLEASE REMOVE WHEN DONE
 
                double sin = Math.sin(tempResult[0]);
@@ -84,6 +89,8 @@ public class VuforiaTest extends LinearOpMode {
                 prevAngle[2] = rotation.thirdAngle;
 
             } else {
+                robot.turn(0.2);
+                telemetry.addData("Turn", 0.2);
                 telemetry.addData("No image found", "");
             }
 
