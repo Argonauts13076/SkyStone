@@ -347,6 +347,7 @@ public class BasicDriveTrainHardware {
         try {
             ScissorLift = hwMap.get(DcMotor.class, "scissor_lift");
             ScissorLift.setDirection(DcMotor.Direction.FORWARD);
+            ScissorLift.setTargetPosition(0);
             ScissorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             ScissorLift.setPower(ScissorLiftPower);
 
