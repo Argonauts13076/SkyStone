@@ -115,7 +115,7 @@ public class BasicDriveTrainHardware {
     public static double GripperLeftClosePosition = 0;
     public static double GripperLeftOpenPosition = 0.175;
     public static double GripperRightDefaultPosition = 0.2;
-    public static double GripperRightClosePosition = 0.85;
+    public static double GripperRightClosePosition = 0.95;
     public static double GripperRightOpenPosition = 0.785;
 
     private int currentPosition = 0;
