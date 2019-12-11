@@ -20,8 +20,6 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
 
         String s = hardware.init(hardwareMap);
 
-        hardware.scissorLiftManualOverride();
-
         telemetry.addData("Errors", s);
         telemetry.update();
 
@@ -72,11 +70,11 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
             }
 
             if(hardware.canUseScissorLift) {
-                /*if (gamepad2LeftTrigger > 0.5 && gamepad2RightTrigger > 0.5) {
+                if (/*gamepad2LeftTrigger > 0.5 && gamepad2RightTrigger > 0.5*/ true) {
                     hardware.scissorLiftManualOverride();
                 } else {
                     hardware.revokeScissorLiftManualOverride();
-                }*/
+                }
 
                 if (hardware.getManualOverride()) {
                     if (!(gamepad2DPadUp == gamepad2DPadDown)) {
