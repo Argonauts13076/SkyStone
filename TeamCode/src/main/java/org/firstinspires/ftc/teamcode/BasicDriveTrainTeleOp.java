@@ -79,10 +79,10 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
                 if (hardware.getManualOverride()) {
                     if (!(gamepad2DPadUp == gamepad2DPadDown)) {
                         if (gamepad2DPadUp) {
-                            hardware.ScissorLift.setPower(BasicDriveTrainHardware.ScissorLiftPower);
+                            hardware.ScissorLift.setPower(-BasicDriveTrainHardware.ScissorLiftPower);
                         }
                         if (gamepad2DPadDown) {
-                            hardware.ScissorLift.setPower(-BasicDriveTrainHardware.ScissorLiftPower);
+                            hardware.ScissorLift.setPower(BasicDriveTrainHardware.ScissorLiftPower);
                         }
                     } else {
                         hardware.ScissorLift.setPower(0);
