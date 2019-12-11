@@ -110,10 +110,13 @@ public class BasicDriveTrainHardware {
 
     // ToDo Set Values
     public static int[] ScissorLiftPositionList = new int[]{0,10,100};
-    public static double ScissorLiftPower = 0;
-    public static double GripperDefaultPosition = 0.5;
-    public static double GripperClosePosition = 0.75;
-    public static double GripperOpenPosition = 0.25;
+    public static double ScissorLiftPower = 0.5;
+    public static double GripperLeftDefaultPosition = 0.5;
+    public static double GripperLeftClosePosition = 0.75;
+    public static double GripperLeftOpenPosition = 0.25;
+    public static double GripperRightDefaultPosition = 0.5;
+    public static double GripperRightClosePosition = 0.75;
+    public static double GripperRightOpenPosition = 0.25;
 
     private int currentPosition = 0;
     private boolean gripperState = false;
@@ -364,7 +367,7 @@ public class BasicDriveTrainHardware {
             GripperLeft.setDirection(Servo.Direction.FORWARD);
             GripperRight.setDirection(Servo.Direction.FORWARD);
 
-            ChangeGripperPosition(GripperDefaultPosition);
+            ChangeGripperPosition(GripperLeftDefaultPosition, GripperRightDefaultPosition);
 
             canUseGripper = true;
 
@@ -376,24 +379,24 @@ public class BasicDriveTrainHardware {
     }
 
     public void OpenGripper(){
-        gripperState = false;
-        ChangeGripperPosition(GripperOpenPosition);
+        gripperState = true;
+        ChangeGripperPosition(GripperLeftOpenPosition, GripperRightOpenPosition);
     }
 
     public void CloseGripper(){
-        gripperState = true;
-        ChangeGripperPosition(GripperClosePosition);
+        gripperState = false;
+        ChangeGripperPosition(GripperLeftClosePosition, GripperRightClosePosition);
     }
 
     public boolean getGripperState(){
         return gripperState;
     }
 
-    private void ChangeGripperPosition(double position){
+    private void ChangeGripperPosition(double leftPosition, double rightPosition){
         // ToDo Make Servo Code
         // Hopefully it works
-        GripperLeft.setPosition(position);
-        GripperRight.setPosition(1-position);
+        GripperLeft.setPosition(leftPosition);
+        GripperRight.setPosition(rightPosition);
     }
 
     public void SetScissorLiftPosition(int newPos){
