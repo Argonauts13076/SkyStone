@@ -112,10 +112,10 @@ public class BasicDriveTrainHardware {
     public static int[] ScissorLiftPositionList = new int[]{0,10,100};
     public static double ScissorLiftPower = 0.5;
     public static double GripperLeftDefaultPosition = 0.705;
-    public static double GripperLeftClosePosition = 0.75;
-    public static double GripperLeftOpenPosition = 0.2;
-    public static double GripperRightDefaultPosition = 0.2;
-    public static double GripperRightClosePosition = 0.75;
+    public static double GripperLeftClosePosition = 0.1;
+    public static double GripperLeftOpenPosition = 0.15;
+    public static double GripperRightDefaultPosition = 0.15;
+    public static double GripperRightClosePosition = 0;
     public static double GripperRightOpenPosition = 0.705;
 
     private int currentPosition = 0;
