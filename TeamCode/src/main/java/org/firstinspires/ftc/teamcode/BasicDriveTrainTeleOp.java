@@ -63,10 +63,10 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
                 BackRight = Range.clip(BackRight, -1, 1);
 
                 // write the values to the motors
-                hardware.FrontLeft.setPower(FrontLeft / speedDivisor);
-                hardware.FrontRight.setPower(FrontRight / speedDivisor);
-                hardware.RearLeft.setPower(BackLeft / speedDivisor);
-                hardware.RearRight.setPower(BackRight / speedDivisor);
+                hardware.FrontLeft.setPower(-FrontLeft / speedDivisor);
+                hardware.FrontRight.setPower(-FrontRight / speedDivisor);
+                hardware.RearLeft.setPower(-BackLeft / speedDivisor);
+                hardware.RearRight.setPower(-BackRight / speedDivisor);
             }
 
             if(hardware.canUseScissorLift) {
