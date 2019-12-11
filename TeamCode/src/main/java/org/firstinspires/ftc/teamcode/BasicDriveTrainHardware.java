@@ -444,6 +444,6 @@ public class BasicDriveTrainHardware {
     }
 
     public boolean getManualOverride(){
-        return gripperState;
+        return manualOverride;
     }
 }
