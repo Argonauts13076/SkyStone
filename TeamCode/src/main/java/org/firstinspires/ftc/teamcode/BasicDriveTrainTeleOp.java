@@ -25,6 +25,8 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
 
         waitForStart();
 
+        hardware.OpenGripper();
+
         while (opModeIsActive()) {
 
             float gamepad1LeftY = -gamepad1.left_stick_y;
