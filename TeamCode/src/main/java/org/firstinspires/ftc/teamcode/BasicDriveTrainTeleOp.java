@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class BasicDriveTrainTeleOp extends LinearOpMode {
 
     float speedDivisor = 1;
+    double scissorLiftSpeed = 1;
     boolean scissorLiftLatch = true;
     boolean gripperLatch = true;
 
@@ -22,6 +23,8 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
 
         telemetry.addData("Errors", s);
         telemetry.update();
+
+        scissorLiftSpeed = BasicDriveTrainHardware.ScissorLiftPower;
 
         waitForStart();
 
@@ -41,6 +44,8 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
             float gamepad2LeftTrigger = gamepad2.left_trigger;
             float gamepad2RightTrigger = gamepad2.left_trigger;
             boolean gamepad2A = gamepad2.a;
+            boolean gamepad2B = gamepad2.b;
+            boolean gamepad2X = gamepad2.x;
 
             if(hardware.canUseWheels) {
                 if (gamepad1X) {
@@ -78,13 +83,20 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
                     hardware.revokeScissorLiftManualOverride();
                 }*/
 
+                if (gamepad2X) {
+                    scissorLiftSpeed = BasicDriveTrainHardware.ScissorLiftPartialPower;
+                }
+                if (gamepad2B) {
+                    scissorLiftSpeed = BasicDriveTrainHardware.ScissorLiftPower;
+                }
+
                 if (hardware.getManualOverride()) {
                     if (!(gamepad2DPadUp == gamepad2DPadDown)) {
                         if (gamepad2DPadUp) {
-                            hardware.ScissorLift.setPower(-BasicDriveTrainHardware.ScissorLiftPower);
+                            hardware.ScissorLift.setPower(-scissorLiftSpeed);
                         }
                         if (gamepad2DPadDown) {
-                            hardware.ScissorLift.setPower(BasicDriveTrainHardware.ScissorLiftPower);
+                            hardware.ScissorLift.setPower(scissorLiftSpeed);
                         }
                     } else {
                         hardware.ScissorLift.setPower(0);

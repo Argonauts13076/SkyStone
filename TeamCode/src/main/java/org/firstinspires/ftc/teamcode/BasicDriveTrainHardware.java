@@ -111,6 +111,7 @@ public class BasicDriveTrainHardware {
     // ToDo Set Values
     public static int[] ScissorLiftPositionList = new int[]{0,10,100};
     public static double ScissorLiftPower = 1;
+    public static double ScissorLiftPartialPower = 0.5;
     public static double GripperDefaultPosition = 0.8;
     public static double GripperClosePosition = 0.15;
     public static double GripperOpenPosition = 0.4;
