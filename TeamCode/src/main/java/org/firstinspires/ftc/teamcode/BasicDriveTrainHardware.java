@@ -34,7 +34,7 @@ public class BasicDriveTrainHardware {
 
     // IMPORTANT: If you are using a USB WebCam, you must select CAMERA_CHOICE = BACK; and PHONE_IS_PORTRAIT = false;
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
-    private static final boolean PHONE_IS_PORTRAIT = false  ;
+    private static final boolean PHONE_IS_PORTRAIT = false;
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -54,8 +54,8 @@ public class BasicDriveTrainHardware {
 
     // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
     // We will define some constants and conversions here
-    public static final float mmPerInch        = 25.4f;
-    private static final float mmTargetHeight   = (6) * mmPerInch;          // the height of the center of the target image above the floor
+    public static final float mmPerInch = 25.4f;
+    private static final float mmTargetHeight = (6) * mmPerInch;          // the height of the center of the target image above the floor
 
     // Constant for Stone Target
     private static final float stoneZ = 2.00f * mmPerInch;
@@ -69,7 +69,7 @@ public class BasicDriveTrainHardware {
 
     // Constants for perimeter targets
     private static final float halfField = 72 * mmPerInch;
-    private static final float quadField  = 36 * mmPerInch;
+    private static final float quadField = 36 * mmPerInch;
 
     private VuforiaLocalizer vuforia = null;
     WebcamName webcamName = null;
@@ -77,9 +77,9 @@ public class BasicDriveTrainHardware {
     float PhoneDisplacementForward = 6;
     float PhoneDisplacementVertical = 5;
     float PhoneDisplacementLeft = 0;
-    float phoneXRotate    = 0;
-    float phoneYRotate    = 0;
-    float phoneZRotate    = 0;
+    float phoneXRotate = 0;
+    float phoneYRotate = 0;
+    float phoneZRotate = 0;
 
     public VuforiaTrackables targetsSkyStone;
 
@@ -109,14 +109,15 @@ public class BasicDriveTrainHardware {
     public Servo GripperRight;
 
     // ToDo Set Values
-    public static int[] ScissorLiftPositionList = new int[]{0,10,100};
+    public static int[] ScissorLiftPositionList = new int[]{0, -700, -1000, -1500, -3000, -3500, -7000,
+    -8200, -13500, -15800};
     public static double ScissorLiftPower = 1;
     public static double ScissorLiftPartialPower = 0.5;
     public static double GripperDefaultPosition = 0.8;
-    public static double GripperClosePosition = 0.15;
+    public static double GripperClosePosition = 0.19;
     public static double GripperOpenPosition = 0.4;
 
-    private int currentPosition = 0;
+    public int currentPosition = 0;
     private boolean gripperState = false;
 
     private boolean manualOverride = false;
@@ -130,12 +131,13 @@ public class BasicDriveTrainHardware {
     public boolean canUseScissorLift = false;
     public boolean canUseGripper = false;
 
-    HardwareMap hwMap           =  null;
-    private ElapsedTime period  = new ElapsedTime();
+    HardwareMap hwMap = null;
+    private ElapsedTime period = new ElapsedTime();
 
-    public BasicDriveTrainHardware(){}
+    public BasicDriveTrainHardware() {
+    }
 
-    public String init(HardwareMap ahwMap){
+    public String init(HardwareMap ahwMap) {
         hwMap = ahwMap;
 
         //---------//
@@ -306,7 +308,7 @@ public class BasicDriveTrainHardware {
             stoneTracker = new FieldPosVuf(stone, robotFromCamera);
 
             canUseVuforia = true;
-        }catch(Exception e){
+        } catch (Exception e) {
             result += e.toString();
         }
 
@@ -337,7 +339,7 @@ public class BasicDriveTrainHardware {
 
             canUseWheels = true;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             result += e.toString();
         }
 
@@ -347,18 +349,18 @@ public class BasicDriveTrainHardware {
 
         try {
             ScissorLift = hwMap.get(DcMotor.class, "scissor_lift");
-            /*ScissorLift.setDirection(DcMotor.Direction.FORWARD);
+            ScissorLift.setDirection(DcMotor.Direction.FORWARD);
             ScissorLift.setTargetPosition(0);
             ScissorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            ScissorLift.setPower(ScissorLiftPower);*/
+            ScissorLift.setPower(ScissorLiftPower);
 
-            manualOverride = true;
-            ScissorLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            ScissorLift.setPower(0);
+            //manualOverride = true;
+            //ScissorLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            //ScissorLift.setPower(0);
 
             canUseScissorLift = true;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             result += e.toString();
         }
 
@@ -373,46 +375,59 @@ public class BasicDriveTrainHardware {
 
             canUseGripper = true;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             result += e.toString();
         }
 
         return result;
     }
 
-    public void OpenGripper(){
+    public OpenGLMatrix getStoneTransform() {
+        VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
+        OpenGLMatrix stoneLocationTransform = null;
+        if (((VuforiaTrackableDefaultListener)stoneTarget.getListener()).isVisible()) {
+            stoneLocationTransform = ((VuforiaTrackableDefaultListener) stoneTarget.getListener()).getUpdatedRobotLocation();
+        }
+        return stoneLocationTransform;
+    }
+
+    public void OpenGripper() {
         gripperState = true;
         ChangeGripperPosition(GripperOpenPosition);
     }
 
-    public void CloseGripper(){
+    public void CloseGripper() {
         gripperState = false;
         ChangeGripperPosition(GripperClosePosition);
     }
 
-    public boolean getGripperState(){
+    public boolean getGripperState() {
         return gripperState;
     }
 
-    private void ChangeGripperPosition(double Position){
+    private void ChangeGripperPosition(double Position) {
         // ToDo Make Servo Code
         // Hopefully it works
         GripperLeft.setPosition(Position);
         GripperRight.setPosition(Position);
     }
 
-    public void SetScissorLiftPosition(int newPos){
+    public void SetScissorLiftPosition(int newPos) {
+        if (newPos < 0) {
+            newPos = 0;
+        } else if (newPos >= ScissorLiftPositionList.length) {
+            newPos = ScissorLiftPositionList.length - 1;
+        }
+        if (currentPosition == newPos) {
+            return;
+        }
         currentPosition = newPos;
-        if(currentPosition > ScissorLiftPositionList.length-1){
-            currentPosition = ScissorLiftPositionList.length-1;
-        }
-        if(currentPosition < 0){
-            currentPosition = 0;
-        }
 
-        if(!manualOverride){
-            ScissorLift.setTargetPosition(ScissorLiftPositionList[currentPosition]);
-        }
+        ScissorLift.setTargetPosition(ScissorLiftPositionList[currentPosition]);
+    }
+
+    public int getScissorEncoderCount() {
+        return ScissorLift.getCurrentPosition();
     }
 
     public int getScissorLiftPosition(){
@@ -420,28 +435,34 @@ public class BasicDriveTrainHardware {
     }
 
     public void incrementPosition(){
-        SetScissorLiftPosition(currentPosition++);
+        SetScissorLiftPosition(currentPosition + 1);
     }
 
-    public void decrementPosition(){
-        SetScissorLiftPosition(currentPosition--);
+    public void decrementPosition() {
+        SetScissorLiftPosition(currentPosition - 1);
     }
 
-    public void scissorLiftManualOverride(){
+    public void scissorLiftManualOverride() {
         manualOverride = true;
-        ScissorLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        ScissorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //ScissorLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         ScissorLift.setPower(0);
     }
 
-    public void revokeScissorLiftManualOverride(){
-        manualOverride = false;
-        ScissorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        ScissorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        ScissorLift.setPower(ScissorLiftPower);
-        currentPosition = 0;
+    public void revokeScissorLiftManualOverride() {
+        if (manualOverride == true) {
+            manualOverride = false;
+
+            ScissorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            ScissorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            ScissorLift.setPower(ScissorLiftPower);
+            currentPosition = 0;
+            ScissorLift.setTargetPosition(0);
+        }
     }
 
-    public boolean getManualOverride(){
+    public boolean getManualOverride() {
         return manualOverride;
     }
 }

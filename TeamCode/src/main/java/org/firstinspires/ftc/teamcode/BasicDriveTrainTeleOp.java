@@ -21,9 +21,6 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
 
         String s = hardware.init(hardwareMap);
 
-        telemetry.addData("Errors", s);
-        telemetry.update();
-
         scissorLiftSpeed = BasicDriveTrainHardware.ScissorLiftPower;
 
         waitForStart();
@@ -41,8 +38,15 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
 
             boolean gamepad2DPadUp = gamepad2.dpad_up;
             boolean gamepad2DPadDown = gamepad2.dpad_down;
+
+// Aidan driving practice
+//            boolean gamepad1DPadUp = gamepad1.dpad_up;
+//            boolean gamepad1DPadDown = gamepad1.dpad_down;
+//            boolean gamepad1Y = gamepad1.y;
+
+
             float gamepad2LeftTrigger = gamepad2.left_trigger;
-            float gamepad2RightTrigger = gamepad2.left_trigger;
+            float gamepad2RightTrigger = gamepad2.right_trigger;
             boolean gamepad2A = gamepad2.a;
             boolean gamepad2B = gamepad2.b;
             boolean gamepad2X = gamepad2.x;
@@ -77,11 +81,11 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
             }
 
             if(hardware.canUseScissorLift) {
-                /*if (gamepad2LeftTrigger > 0.5 && gamepad2RightTrigger > 0.5) {
+                if (gamepad2LeftTrigger > 0.5 && gamepad2RightTrigger > 0.5) {
                     hardware.scissorLiftManualOverride();
                 } else {
                     hardware.revokeScissorLiftManualOverride();
-                }*/
+                }
 
                 if (gamepad2X) {
                     scissorLiftSpeed = BasicDriveTrainHardware.ScissorLiftPartialPower;
@@ -113,14 +117,29 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
                                 scissorLiftLatch = false;
                             }
                         }
+                        /*
+                    } else if (!(gamepad1DPadUp == gamepad1DPadDown)) {
+                        if (scissorLiftLatch) {
+                            if (gamepad1DPadUp) {
+                                hardware.incrementPosition();
+                                scissorLiftLatch = false;
+                            }
+                            if (gamepad1DPadDown) {
+                                hardware.decrementPosition();
+                                scissorLiftLatch = false;
+                            }
+                        }
+                         */
                     } else {
                         scissorLiftLatch = true;
+
                     }
                 }
             }
 
             if(hardware.canUseGripper) {
                 if (gamepad2A) {
+//                if (gamepad2A || gamepad1Y) {
                     if (gripperLatch) {
                         gripperLatch = false;
                         if (hardware.getGripperState()) {
@@ -133,7 +152,8 @@ public class BasicDriveTrainTeleOp extends LinearOpMode {
                     gripperLatch = true;
                 }
             }
-
+            telemetry.addData("scissorPos", hardware.getScissorEncoderCount() );
+            telemetry.update();
             sleep(50);
         }
     }
